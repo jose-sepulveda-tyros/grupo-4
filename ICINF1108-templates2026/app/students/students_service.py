@@ -44,7 +44,7 @@ class StudentsService:
     def update(self, student_id: str, data: UpdateStudentDto) -> Student:
         existing = self.find_by_id(student_id)
 
-        if data.email and data.email != existing.email:
+        if data.email and data.email.lower() != existing.email.lower():
             self.assert_email_available(data.email)
 
         updated = existing.model_copy(
@@ -64,7 +64,7 @@ class StudentsService:
         return existing
 
     def assert_email_available(self, email: str) -> None:
-        exists = any(student.email == email for student in self.store.find_all())
+        exists = any(student.email.lower() == email.lower() for student in self.store.find_all())
 
         if exists:
             raise HTTPException(
