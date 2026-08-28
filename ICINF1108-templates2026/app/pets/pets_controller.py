@@ -28,6 +28,20 @@ def find_all(
     )
 
 
+@router.get(
+    "/{petId}",
+    response_model=ApiResponse[Pet],
+)
+def find_by_id(studentId: str, petId: str) -> ApiResponse[Pet]:
+    pet = pets_service.find_owned(studentId, petId)
+
+    return ApiResponse[Pet].success_response(
+        data=pet,
+        message="Mascota obtenida correctamente",
+    )
+
+
+
 @router.post(
     "",
     status_code=status.HTTP_201_CREATED,
