@@ -134,3 +134,14 @@ La aplicación queda disponible en:
 - `make format` — formatea el código con Ruff
 - `make format-check` — verifica el formato
 - `make clean` — elimina `.venv`, cachés y artefactos
+
+# Pruebas y Validación del Estándar
+
+Para verificar que todos los endpoints y excepciones de la API cumplen estrictamente con la estructura `ApiResponse`, se puede utilizar la colección de Postman incluida en el proyecto:
+
+1. Importar el archivo ubicado en la carpeta `/postman` dentro de **Postman**.
+2. Ejecutar las peticiones para la entidad `students` y sus mascotas `pets`.
+3. Validar las siguientes respuestas clave en los tests:
+   - **Éxito (200/201):** Confirmar la presencia de los campos `success: true`, `statusCode`, `message`, `data` y `error: null`.
+   - **Error de cliente (404/409):** Validar que las excepciones controladas retornen `success: false` y la estructura `error` poblada sin romper el contrato JSON.
+   - **Error de validación (422):** Verificar que los fallos en los esquemas de Pydantic sean capturados por el manejador global.
