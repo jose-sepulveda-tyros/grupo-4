@@ -8,7 +8,6 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app.shared.api_response import ApiResponse
 
-
 MENSAJES_HTTP = {
     400: "Solicitud incorrecta",
     404: "Recurso no encontrado",

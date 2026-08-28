@@ -5,7 +5,6 @@ from app.shared.api_response import ApiResponse
 from app.students.students_schemas import CreateStudentDto, Student, UpdateStudentDto
 from app.students.students_service import students_service
 
-
 router = APIRouter(
     prefix="/api/students",
     tags=["Students"],

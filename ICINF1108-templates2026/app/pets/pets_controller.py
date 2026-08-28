@@ -4,7 +4,6 @@ from app.pets.pets_schemas import CreatePetDto, Pet, UpdatePetDto
 from app.pets.pets_service import pets_service
 from app.shared.api_response import ApiResponse
 
-
 router = APIRouter(
     prefix="/api/students/{studentId}/pets",
     tags=["Pets"],
