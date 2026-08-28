@@ -27,7 +27,65 @@ Cada estudiante tiene `id` (UUID), `name`, `email`, `age`, `createdAt` y `update
 
 Cada mascota tiene `id` (UUID), `studentId`, `name`, `species`, `age` (opcional), `createdAt` y `updatedAt`. Solo puede operar sobre su estudiante dueño.
 
-Las respuestas devuelven los datos crudos, sin envoltorios. Los errores de validación usan el formato nativo de FastAPI (`422`) y las excepciones HTTP los códigos estándar (`404`, `409`).
+Todas las respuestas JSON, tanto exitosas como de error, utilizan un estándar común. Se conservan los códigos HTTP correspondientes, como `200`, `201`, `404`, `409`, `422` y `500`.
+
+## Estándar de respuestas JSON
+
+La API utiliza la clase genérica `ApiResponse[DataT]`. El campo `data` puede contener un objeto, una lista de objetos o `null`, pero la estructura principal siempre se mantiene.
+
+| Campo | Tipo JSON | Descripción |
+| --- | --- | --- |
+| `success` | `boolean` | Indica si la solicitud terminó correctamente. |
+| `statusCode` | `number` | Código de estado HTTP de la respuesta. |
+| `message` | `string` | Mensaje que explica el resultado. |
+| `data` | `object`, `array` o `null` | Contiene los datos solicitados. |
+| `error` | `object` o `null` | Contiene el tipo y los detalles del error. |
+
+### Ejemplo de respuesta exitosa con una lista
+
+```json
+{
+  "success": true,
+  "statusCode": 200,
+  "message": "Estudiantes obtenidos correctamente",
+  "data": [],
+  "error": null
+}
+```
+
+### Ejemplo de respuesta exitosa con un objeto
+
+```json
+{
+  "success": true,
+  "statusCode": 201,
+  "message": "Estudiante creado correctamente",
+  "data": {
+    "id": "identificador-del-estudiante",
+    "name": "Jose Sepulveda",
+    "email": "jose@example.com",
+    "age": 24
+  },
+  "error": null
+}
+```
+
+### Ejemplo de respuesta de error
+
+```json
+{
+  "success": false,
+  "statusCode": 404,
+  "message": "Estudiante no encontrado",
+  "data": null,
+  "error": {
+    "type": "not_found",
+    "details": null
+  }
+}
+```
+
+Los errores HTTP, los errores de validación y los errores internos son transformados por manejadores globales para mantener este mismo formato.
 
 ## Contexto técnico
 
