@@ -1,4 +1,5 @@
-from fastapi import APIRouter, status
+from typing import Optional
+from fastapi import APIRouter, Query, status
 
 from app.pets.pets_schemas import CreatePetDto, Pet, UpdatePetDto
 from app.pets.pets_service import pets_service
@@ -11,8 +12,15 @@ router = APIRouter(
 
 
 @router.get("", response_model=ApiResponse[list[Pet]])
-def find_all(studentId: str) -> ApiResponse[list[Pet]]:
+def find_all(
+    studentId: str,
+    name: Optional[str] = Query(None, description="Filtrar mascotas por coincidencia en el nombre"),
+) -> ApiResponse[list[Pet]]:
     pets = pets_service.find_all_for_student(studentId)
+
+    # Filtrar por query parameter 'name' si el cliente lo envía en la URL
+    if name:
+        pets = [p for p in pets if name.lower() in p.name.lower()]
 
     return ApiResponse[list[Pet]].success_response(
         data=pets,
