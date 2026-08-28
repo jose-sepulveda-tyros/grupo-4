@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.pets.pets_controller import router as pets_router
+from app.shared.errores import registrar_manejadores
 from app.students.students_controller import router as students_router
 
 
@@ -20,6 +21,8 @@ def create_app() -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+
+    registrar_manejadores(app)
 
     app.include_router(students_router)
     app.include_router(pets_router)
